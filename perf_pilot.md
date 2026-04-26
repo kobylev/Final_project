@@ -1,4 +1,4 @@
-# Product Requirements Document (PRD): OptiSharp
+# Product Requirements Document (PRD): Perf_Pilot
 
 ## 1. Executive Summary
 **OptiSharp** is a specialized, local (air-gapped) AI assistant designed to optimize C# code for high-performance execution. Unlike general-purpose LLMs, this system focuses on identifying sub-optimal patterns and suggesting advanced .NET 8+ features such as Zero-allocation memory management (`Span<T>`), High-throughput I/O (`System.Threading.Channels`), and Hardware Intrinsics (SIMD).
