@@ -17,7 +17,7 @@ Create a VS Code TypeScript extension scaffold called "perf-pilot".
 The repo should have 4 folders:
 - extension/ (VS Code TypeScript extension)
 - ai-engine/ (Python ONNX inference server)
-- roslyn-service/ (C# .NET 8 console app acting as a local LSP sidecar)
+- roslyn-service/ (C# .NET 10 console app acting as a local LSP sidecar)
 - templates/ (JSON files mapping intent labels to Roslyn code templates)
 
 Generate the root package.json, tsconfig.json, .eslintrc, .gitignore, and
@@ -33,12 +33,12 @@ a README.md explaining the architecture. Use VS Code extension API v1.90+.
 **🤖 AI Prompt:**
 ```
 I'm building a C# performance AI tool. Define a JSON taxonomy of exactly 8
-performance intent labels for .NET 8+ code.
+performance intent labels for .NET 10+ code.
 For each label provide:
 - id (snake_case)
 - description (one sentence)
 - typical_patterns (list of 3 code patterns that match this intent)
-- target_optimization (the .NET 8 feature to suggest: e.g., Span<T>, Channels, SIMD)
+- target_optimization (the .NET 10 feature to suggest: e.g., Span<T>, Channels, SIMD)
 - anti_patterns (2 common anti-patterns that should trigger this label)
 
 Output only valid JSON, no markdown.
@@ -49,14 +49,14 @@ Output only valid JSON, no markdown.
 ## Phase 1 — Roslyn Service (C# Sidecar)
 
 ### 1.1 — Build the AST Extractor
-- [ ] Create a .NET 8 console app in `roslyn-service/`
+- [ ] Create a .NET 10 console app in `roslyn-service/`
 - [ ] Use `Microsoft.CodeAnalysis.CSharp` (Roslyn) to parse a C# snippet
 - [ ] Extract: method name, parameter types, loop patterns, allocation sites, async/await usage
 - [ ] Output a clean JSON summary of the AST
 
 **🤖 AI Prompt (use in Claude Code or Cursor):**
 ```
-Write a .NET 8 C# console app using Microsoft.CodeAnalysis.CSharp (Roslyn).
+Write a .NET 10 C# console app using Microsoft.CodeAnalysis.CSharp (Roslyn).
 It should:
 1. Accept a C# code snippet via stdin (as plain text)
 2. Parse it into a SyntaxTree
@@ -78,7 +78,7 @@ Use SyntaxWalker pattern. Add error handling for parse failures.
 
 **🤖 AI Prompt:**
 ```
-Write a .NET 8 C# class called `RoslynCodeInjector` that:
+Write a .NET 10 C# class called `RoslynCodeInjector` that:
 1. Takes as input: (a) original C# method source string, (b) a JSON template
    containing a code pattern with {PLACEHOLDER} tokens
 2. Uses Roslyn CSharpSyntaxRewriter to replace the original method body
@@ -96,7 +96,7 @@ Show usage example with a method that uses List<byte> replaced by ArrayPool<byte
 **🤖 AI Prompt:**
 ```
 Create 8 Roslyn code-injection templates in JSON format, one for each of
-these .NET 8 performance optimizations:
+these .NET 10 performance optimizations:
 1. ArrayPool<T> instead of new T[]
 2. Span<T> for string slicing
 3. System.Threading.Channels for producer-consumer
@@ -252,7 +252,7 @@ String_Processing, Allocation_Heavy, Async_Stream, Buffer_Reuse]
 Each file must:
 - Contain one realistic but sub-optimal method (10-30 lines)
 - Have a comment at the top: // EXPECTED_LABEL: <label>
-- Be syntactically valid .NET 8 C#
+- Be syntactically valid .NET 10 C#
 
 These will be used as ground-truth test inputs for the PerfPilot pipeline.
 ```
@@ -266,13 +266,13 @@ Write a GitHub Actions workflow file (.github/workflows/ci.yml) for a
 monorepo with:
 - extension/ (Node.js TypeScript, tested with `npm test`)
 - ai-engine/ (Python, tested with `pytest`)
-- roslyn-service/ (C# .NET 8, tested with `dotnet test`)
+- roslyn-service/ (C# .NET 10, tested with `dotnet test`)
 
 Jobs:
 1. lint: ESLint on extension/, flake8 on ai-engine/
 2. test-extension: Node 20, npm ci, npm test
 3. test-python: Python 3.11, pip install, pytest ai-engine/tests/
-4. test-roslyn: dotnet 8, dotnet test roslyn-service/
+4. test-roslyn: dotnet 10, dotnet test roslyn-service/
 5. package: on main branch only, run `vsce package` and upload artifact
 
 All jobs run on ubuntu-latest.

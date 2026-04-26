@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD): Perf_Pilot
 
 ## 1. Executive Summary
-**PerfPilot** is a specialized, local (air-gapped) AI assistant designed to optimize C# code for high-performance execution. Unlike general-purpose LLMs, this system focuses on identifying sub-optimal patterns and suggesting advanced .NET 8+ features such as Zero-allocation memory management (`Span<T>`), High-throughput I/O (`System.Threading.Channels`), and Hardware Intrinsics (SIMD).
+**PerfPilot** is a specialized, local (air-gapped) AI assistant designed to optimize C# code for high-performance execution. Unlike general-purpose LLMs, this system focuses on identifying sub-optimal patterns and suggesting advanced .NET 10+ features such as Zero-allocation memory management (`Span<T>`), High-throughput I/O (`System.Threading.Channels`), and Hardware Intrinsics (SIMD).
 
 ## 2. Project Goals & Objectives
 * **Air-Gapped Operation:** Fully functional without internet connectivity for secure environments.
