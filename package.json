@@ -1,0 +1,26 @@
+{
+  "name": "perf-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local, air-gapped AI assistant for C# performance optimization",
+  "workspaces": [
+    "extension",
+    "ai-engine",
+    "roslyn-service"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "keywords": [
+    "dotnet",
+    "csharp",
+    "performance",
+    "ai",
+    "onnx",
+    "roslyn",
+    "vscode"
+  ],
+  "author": "PerfPilot Team",
+  "license": "MIT"
+}

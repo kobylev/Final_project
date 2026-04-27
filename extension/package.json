@@ -1,0 +1,69 @@
+{
+  "name": "perf-pilot-extension",
+  "displayName": "PerfPilot",
+  "description": "Local, air-gapped AI assistant for C# performance optimization",
+  "version": "0.1.0",
+  "publisher": "perfpilot",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "perfpilot.analyze",
+        "title": "PerfPilot: Analyze Performance"
+      }
+    ],
+    "configuration": {
+      "title": "PerfPilot",
+      "properties": {
+        "perfpilot.autoAnalyzeOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Trigger analysis automatically on file save"
+        },
+        "perfpilot.confidenceThreshold": {
+          "type": "number",
+          "default": 0.80,
+          "minimum": 0.5,
+          "maximum": 1.0,
+          "description": "Minimum classifier confidence to show a suggestion"
+        },
+        "perfpilot.modelPath": {
+          "type": "string",
+          "default": "bundled",
+          "description": "Path to a custom ONNX model (advanced)"
+        },
+        "perfpilot.enableTelemetry": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send anonymous usage stats (never sends code)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5",
+    "@vscode/test-electron": "^2.3.9"
+  }
+}

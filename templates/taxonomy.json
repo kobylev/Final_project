@@ -1,0 +1,114 @@
+[
+  {
+    "id": "io_intensive",
+    "description": "Synchronous I/O operations blocking the main thread.",
+    "typical_patterns": [
+      "File.ReadAllText()",
+      "HttpClient.Send()",
+      "SqlCommand.ExecuteReader()"
+    ],
+    "target_optimization": "IAsyncEnumerable<T> / Async pipelines",
+    "anti_patterns": [
+      "Blocking calls in web requests",
+      "Sync file reads in loops"
+    ]
+  },
+  {
+    "id": "memory_intensive",
+    "description": "Frequent heap allocations of large buffers inside loops.",
+    "typical_patterns": [
+      "new byte[4096]",
+      "new T[] inside loop",
+      "Repeated large array allocations"
+    ],
+    "target_optimization": "ArrayPool<T> / MemoryPool<T>",
+    "anti_patterns": [
+      "Allocating buffers per request",
+      "Not reusing array memory"
+    ]
+  },
+  {
+    "id": "compute_simd",
+    "description": "Scalar loops over numeric arrays that can be vectorized.",
+    "typical_patterns": [
+      "for(int i=0; i<arr.Length; i++) sum += arr[i]",
+      "Applying math to each element of an array",
+      "Simple arithmetic loops"
+    ],
+    "target_optimization": "System.Runtime.Intrinsics (SIMD)",
+    "anti_patterns": [
+      "Scalar processing of large data sets",
+      "Missing vectorization opportunities"
+    ]
+  },
+  {
+    "id": "concurrent_throughput",
+    "description": "Inefficient synchronization or manual locking in producer-consumer scenarios.",
+    "typical_patterns": [
+      "ConcurrentQueue with manual Sleep",
+      "lock(obj) around queue operations",
+      "Thread-safe collections with high contention"
+    ],
+    "target_optimization": "System.Threading.Channels",
+    "anti_patterns": [
+      "Spin-waiting for data",
+      "Heavy locking in high-throughput paths"
+    ]
+  },
+  {
+    "id": "string_processing",
+    "description": "High-allocation string manipulations and slicing.",
+    "typical_patterns": [
+      "string.Substring()",
+      "string.Split()",
+      "string concatenation in loops"
+    ],
+    "target_optimization": "Span<char> / MemoryExtensions",
+    "anti_patterns": [
+      "Creating many temporary string objects",
+      "Inefficient parsing of large strings"
+    ]
+  },
+  {
+    "id": "allocation_heavy",
+    "description": "General high allocation rate due to collection resizing or unnecessary object creation.",
+    "typical_patterns": [
+      "new List<T>() with unknown capacity",
+      "Frequent Add to collections",
+      "Small object churn"
+    ],
+    "target_optimization": "Pre-sized collections / stackalloc",
+    "anti_patterns": [
+      "Frequent collection reallocations",
+      "Allocating small objects on heap unnecessarily"
+    ]
+  },
+  {
+    "id": "async_stream",
+    "description": "Batched async results causing memory spikes or high latency.",
+    "typical_patterns": [
+      "Task<List<T>> GetItemsAsync()",
+      "Awaiting large batches before processing",
+      "Missing backpressure in async flows"
+    ],
+    "target_optimization": "IAsyncEnumerable<T>",
+    "anti_patterns": [
+      "Returning large lists from async methods",
+      "Blocking until all async results are ready"
+    ]
+  },
+  {
+    "id": "buffer_reuse",
+    "description": "Frequent creation of temporary memory streams or buffers.",
+    "typical_patterns": [
+      "new MemoryStream()",
+      "Repeated buffer creation for I/O",
+      "Short-lived stream objects"
+    ],
+    "target_optimization": "RecyclableMemoryStream",
+    "anti_patterns": [
+      "Not pooling memory streams",
+      "High GC pressure from stream objects"
+    ]
+  }
+]
